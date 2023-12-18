@@ -52,22 +52,30 @@ t_list *ft_newval(int val)
 	return (temp);
 }
 
-bool ft_check_args(char **av)
+bool ft_check_args(int ac, char **av)
 {
   int i;
   int j;
 
   i = 1;
-  while (av[i] != NULL)
+  while (i < ac)
   {
+    if (ft_strchr(av[i], ' ') && !ft_isdigit(av[i][0]) && av[i][0] != '-')
+    {
+      printf("Error\n");
+      return false;
+    }
     j = 0;
     while (av[i][j] != '\0')
     {
-      if (av[i][j] == '-' && j == 0)
-        j++;
-      if ((av[i][j] < '0' || av[i][j] > '9') && av[i][j] != ' ')
+      if (av[i][j] == '-' && !ft_isdigit(av[i][j + 1]))
       {
-        write(2, "Error\n", 6);
+        printf("Error\n");
+        return false;
+      }
+      if (!ft_isdigit(av[i][j]) && av[i][j] != ' ' && av[i][j] != '-')
+      {
+        printf("Error\n");
         return false;
       }
       j++;
@@ -158,9 +166,7 @@ int main(int ac, char **av)
   int i;
   t_list *temp;
 
-	if (ac < 2)
-		return write(STDERR_FILENO, "Error\n", 6);
-  if (!ft_check_args(av))
+  if (!ft_check_args(ac, av))
     return 0;
 	stack_a = ft_lstnew(NULL);
   stack_b = ft_lstnew(NULL);
