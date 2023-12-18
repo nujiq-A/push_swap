@@ -14,11 +14,13 @@ NAME = libft.a
 rm = rm -rf
 CFLAGS = -Wall -Wextra -Werror
 AR = ar -rc
-CC = gcc
+CC = cc
 
+#note: gnl is not bonus version
 GNL_DIR = ./get_next_line
-PRINTF_DIR = ./ft_printf
 
+#note: printf is not made for all architectures
+PRINTF_DIR = ./ft_printf
 PRINTF_N = $(PRINTF_DIR)/libftprintf.a
 
 cfiles = ft_isalpha.c \

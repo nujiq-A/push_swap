@@ -13,14 +13,8 @@ UTILS = $(UTILS_DIR)/ft_swap.c \
 		$(UTILS_DIR)/ft_rotate.c \
 		$(UTILS_DIR)/ft_reverse_rotate.c \
 		$(UTILS_DIR)/ft_init_stacks.c \
-		# $(UTILS_DIR)/ft_is_sorted.c \
-		# $(UTILS_DIR)/ft_is_sorted_rev.c \
-		# $(UTILS_DIR)/ft_get_min.c \
-		# $(UTILS_DIR)/ft_get_max.c \
-		# $(UTILS_DIR)/ft_get_min_index.c \
-		# $(UTILS_DIR)/ft_get_max_index.c \
-		# $(UTILS_DIR)/ft_get_median.c \
-		# $(UTILS_DIR)/ft_get_median_index.c 
+		$(UTILS_DIR)/ft_sort.c
+
 UTILS_OBJS = $(UTILS:.c=.o)
 
 $(NAME): $(UTILS_OBJS)
