@@ -65,9 +65,9 @@ bool ft_check_args(char **av)
     {
       if (av[i][j] == '-' && j == 0)
         j++;
-      if (av[i][j] < '0' || av[i][j] > '9')
+      if ((av[i][j] < '0' || av[i][j] > '9') && av[i][j] != ' ')
       {
-        printf("Error\n");
+        write(2, "Error\n", 6);
         return false;
       }
       j++;
@@ -112,6 +112,45 @@ bool ft_sorted(t_list **stack_a, t_list **stack_b)
   return true;
 }
 
+void  ft_free_split(char **temp)
+{
+  int i;
+
+  i = 0;
+  while (temp[i] != NULL)
+  {
+    free(temp[i]);
+    i++;
+  }
+  free(temp);
+}
+
+void  handle_string(int ac, char **av, t_list **stack_a, t_list **stack_b)
+{
+  int i;
+  int j;
+  char **temp;
+
+  i = 1;
+  while (i < ac)
+  {
+    if (ft_strchr(av[i], ' '))
+    {
+      temp = ft_split(av[i], ' ');
+      j = 0;
+      while (temp[j] != NULL)
+      {
+        ft_lstadd_back(stack_a, ft_newval(ft_atoi(temp[j])));
+        j++;
+      }
+      ft_free_split(temp);
+    }
+    else
+      ft_lstadd_back(stack_a, ft_newval(ft_atoi(av[i])));
+    i++;
+  }
+}
+
 int main(int ac, char **av)
 {
 	t_list *stack_a;
@@ -120,38 +159,26 @@ int main(int ac, char **av)
   t_list *temp;
 
 	if (ac < 2)
-		return 0;
+		return write(STDERR_FILENO, "Error\n", 6);
   if (!ft_check_args(av))
     return 0;
 	stack_a = ft_lstnew(NULL);
   stack_b = ft_lstnew(NULL);
   if (stack_a == NULL || stack_b == NULL)
     return 0;
-  i = 1;
-	while (i < ac)
-	{
-		temp = ft_newval(ft_atoi(av[i]));
-		if (temp == NULL)
-			return (0);
-		ft_lstadd_back(&stack_a, temp);
-		i++;
-	}
+  handle_string(ac, av, &stack_a, &stack_b);
+  // i = 1;
+	// while (i < ac)
+	// {
+	// 	temp = ft_newval(ft_atoi(av[i]));
+	// 	if (temp == NULL)
+	// 		return (0);
+	// 	ft_lstadd_back(&stack_a, temp);
+	// 	i++;
+	// }
   t_list *temp1 = stack_a->next;
   t_list *temp2 = stack_b->next;
   //sort stacks
-  // ft_print_stacks(temp1, temp2);
-
-  // push_largest(&temp1, &temp2);
-  // ft_print_stacks(temp1, temp2);
-  // int j = 0;
-  // while(!ft_sorted(&temp1, &temp2))
-  // {
-  //   push_largest(&temp1, &temp2);
-  //   ft_print_stacks(temp1, temp2);
-  //   j++;
-  //   if (j > 500)
-  //     break;
-  // }
 
   int j = 0;
   while(!ft_sorted(&temp1, &temp2))
