@@ -32,7 +32,6 @@ void	rrr(t_list **stack_a, t_list **stack_b);
 
 void	ft_free_stack(t_list *stack);
 t_list	*ft_newval(int val);
-void	push_smallest(t_list **stack_a, t_list **stack_b);
 
 void	check_args(int ac, char **av);
 

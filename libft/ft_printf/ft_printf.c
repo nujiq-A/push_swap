@@ -56,20 +56,20 @@ static void	flag_init(t_flag *flags)
 	flags->prec = 0;
 }
 
-static void	print_var(const char *s, va_list vars, int *count, t_flag *flags)
+static void	print_var(const char *s, va_list *vars, int *count, t_flag *flags)
 {
 	if (*s == 'c')
-		ss_putchar(va_arg(vars, int), count, flags);
+		ss_putchar(va_arg(*vars, int), count, flags);
 	else if (*s == 's')
-		s_putstr(va_arg(vars, char *), count, flags);
+		s_putstr(va_arg(*vars, char *), count, flags);
 	else if (*s == 'p')
-		s_putaddr(va_arg(vars, uintptr_t), count, flags);
+		s_putaddr(va_arg(*vars, uintptr_t), count, flags);
 	else if (*s == 'd' || *s == 'i')
-		s_putnbr(va_arg(vars, int), count, flags);
+		s_putnbr(va_arg(*vars, int), count, flags);
 	else if (*s == 'u')
-		s_putui(va_arg(vars, unsigned int), count, flags);
+		s_putui(va_arg(*vars, unsigned int), count, flags);
 	else if (*s == 'x' || *s == 'X')
-		s_puthex(va_arg(vars, unsigned int), count, flags, *s);
+		s_puthex(va_arg(*vars, unsigned int), count, flags, *s);
 	else if (*s == '%')
 		ft_putpercent(flags, count);
 	else if (*s)
@@ -78,12 +78,13 @@ static void	print_var(const char *s, va_list vars, int *count, t_flag *flags)
 
 int	ft_printf(const char *s, ...)
 {
-	va_list	vars;
+	va_list	*vars;
 	int		count;
 	t_flag	*flags;
 
 	count = 0;
-	va_start(vars, s);
+	vars = (va_list *)malloc(sizeof(va_list));
+	va_start(*vars, s);
 	while (*s)
 	{
 		flags = (t_flag *)malloc(sizeof(t_flag));
@@ -101,6 +102,7 @@ int	ft_printf(const char *s, ...)
 			s++;
 		free(flags);
 	}
-	va_end(vars);
+	va_end(*vars);
+	free(vars);
 	return (count);
 }
